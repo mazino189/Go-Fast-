@@ -1,0 +1,103 @@
+🚗 GoFast - Ứng dụng Thuê Xe Tự Lái
+GoFast là nền tảng cho thuê xe tự lái thông minh, kết nối người dùng với các dòng xe hiện đại. Hệ thống bao gồm ứng dụng di động (React Native/Expo) 
+và máy chủ quản lý (Node.js/MongoDB), hỗ trợ đặt lịch, thanh toán và vé điện tử QR Code.
+
+🛠 Công Nghệ & Thư Viện (Tech Stack)
+Dự án sử dụng Yarn làm trình quản lý gói (Package Manager) để đảm bảo tính nhất quán của thư viện thông qua file yarn.lock.
+
+1. Frontend (Mobile App)
+Nền tảng: React Native (Expo)
+Thư viện	                                Phiên bản (ước lượng)	    Mục đích sử dụng
+expo	                                    ~50.0.0	                    Framework phát triển ứng dụng.
+expo-router	                                ^3.0.0	                    Quản lý điều hướng màn hình (File-based routing).
+axios	                                    ^1.6.0	                    (Mới) Thư viện gọi API mạnh mẽ (HTTP Client).
+socket.io-client	                        ^4.7.0	                    (Mới) Kết nối thời gian thực với Server (Real-time).
+react-native-maps	                        1.10.0	                    Hiển thị bản đồ Google Maps.
+expo-location	                            ~16.5.0	                    Lấy tọa độ GPS hiện tại.
+expo-image	                                ~1.10.0	                    Tải và cache ảnh tối ưu hiệu suất.
+@react-native-async-storage	                1.21.0	                    Lưu Token và thông tin User cục bộ.
+@react-native-community/datetimepicker	    7.6.1	                    Bộ chọn ngày/giờ khi đặt xe.
+react-native-qrcode-svg	                    6.3.0	                    Tạo mã QR cho vé điện tử.
+react-native-svg	                        14.1.0	                    Hỗ trợ vẽ đồ họa (Dependency của QR).
+react-native-safe-area-context	            4.8.2	                    Xử lý hiển thị trên các màn hình tai thỏ.
+
+
+2. Backend (Server API)
+Nền tảng:               Node.js & Express
+Thư viện	            Mục đích sử dụng
+express	                Framework xây dựng RESTful API.
+mongoose	            ODM để làm việc với MongoDB.
+socket.io	            (Mới) Xử lý kết nối thời gian thực (WebSocket) phía Server.
+dotenv	                Quản lý biến môi trường (.env).
+cors	                Cấu hình chia sẻ tài nguyên (Cross-Origin).
+bcryptjs	            Mã hóa mật khẩu người dùng.
+jsonwebtoken	        Tạo và xác thực JWT Token.
+nodemon	(Dev)           Tự động restart server khi code thay đổi.
+
+🚀 Hướng Dẫn Cài Đặt & Chạy Dự Án
+Yêu cầu hệ thống
+    Node.js (v16 trở lên)
+    Yarn (Cài đặt bằng: npm install --global yarn)
+    MongoDB (Local hoặc Atlas)
+Bước 1: Cài đặt Backend
+Di chuyển vào thư mục backend:
+    cd \self-driving-app-main\
+    cd \self-driving-app-main\
+
+Cài đặt các gói phụ thuộc (sẽ tạo ra yarn.lock)
+    yarn install
+
+Cấu hình file .env(tạo mới nếu chưa có)
+    PORT=3000
+    MONGO_URI=mongodb+srv://<user>:<pass>@cluster.mongodb.net/gofast
+    JWT_SECRET=gofast_secret_key_123
+
+Nạp dữ liệu mẫu (Seeding)
+    node seeder.js
+
+Khởi động Server:
+    yarn start/ npm start 
+    // Server chạy tại: http://localhost:3000
+
+Bước 2: Cài đặt Frontend
+1. Di chuyển vào thư mực frontend:
+    cd \self-selfdriving\
+
+2. Cài đặt các gói phụ thuộc:
+yarn install
+
+3> Cấu hình IP (Quan trọng)
+Mở terminal máy tĩnh, gõ ipcongig (Win) hoặc ipcongif(Mac) -> Lấy IPv4
+Mở file (tabs)/api.ts và cập nhật
+    const IP_ADDRESS = '192.168.1.X'; // Thay X bằng IP máy bạn
+    export const API_URL = `http://${IP_ADDRESS}:3000/api`;
+    export const SOCKET_URL = `http://${IP_ADDRESS}:3000`; // URL cho Socket.io
+
+4.Khởi động ứng dụng
+    npx expo start -c
+    //(Thêm -c để xóa cache cũ, đảm bảo code mới được nạp).
+
+📱 Tính Năng Nổi Bật
+Hệ thống Tài khoản: Đăng ký, Đăng nhập (JWT), Đăng xuất, Lưu phiên làm việc.
+Bản đồ & Định vị: Tích hợp Google Maps, tìm kiếm địa điểm, ghim vị trí, xem xe xung quanh.
+Đặt xe (Booking):
+    Lọc xe theo loại (4, 7, 9 chỗ).
+    Chọn ngày giờ nhận/trả xe linh hoạt.
+    Tính tiền tự động theo thời gian thực.
+    Thanh toán & Vé điện tử:
+Hỗ trợ chọn phương thức thanh toán.
+    QR Code: Tạo vé điện tử chứa thông tin đơn hàng để xác thực khi nhận xe.
+    Quản lý đơn hàng:
+Xem lịch sử chuyến đi.
+    Xem chi tiết đơn hàng.
+
+⚠️ Khắc phục lỗi thường gặp
+Lỗi Network request failed:
+    Kiểm tra lại địa chỉ IP trong (tabs)/api.ts.
+    Tắt Tường lửa (Firewall) trên máy tính.
+    Đảm bảo điện thoại và máy tính chung mạng Wifi.
+Lỗi Cannot find module:
+    Chạy lại lệnh yarn install ở cả 2 thư mục frontend và backend.
+    Kiểm tra lại cấu trúc thư mục xem file có nằm đúng chỗ không.
+    
+© 2025 GoFast Project.
